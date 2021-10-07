@@ -35,6 +35,18 @@ class NoteListActivity : AppCompatActivity() {
 
         val listNote = findViewById<ListView>(R.id.listNotes)
         listNote.adapter = ArrayAdapter(this,android.R.layout.simple_list_item_1,DataManager.notes)
+
+
+        listNote.setOnItemClickListener{parent, view, position, id ->
+              val activityIntent = Intent(this,MainActivity::class.java)
+            activityIntent.putExtra(EXTRA_NOTE_POSITION,position)
+            startActivity(activityIntent)
+
+
+
+        }
+
+
     }
 
 
