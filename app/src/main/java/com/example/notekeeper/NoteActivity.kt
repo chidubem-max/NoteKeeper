@@ -1,15 +1,11 @@
 package com.example.notekeeper
 
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
-import android.view.PointerIcon
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Spinner
@@ -17,7 +13,9 @@ import com.example.notekeeper.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
+    private var tag = "MainActivity"
     private var  notePosition = POSITION_NOT_SET
+
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
@@ -27,27 +25,41 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         setSupportActionBar(binding.toolbar)
-
 
         val adapterCourses = ArrayAdapter<CourseInfo>(this, android.R.layout.simple_spinner_item, DataManager .courses.values.toList())
         adapterCourses.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
-
-        val spinnerCourse = findViewById<Spinner>(R.id.spinnerCourses)
+       val spinnerCourse = findViewById<Spinner>(R.id.spinnerCourses)
         spinnerCourse.adapter = adapterCourses
 
 
-        notePosition = intent.getIntExtra(EXTRA_NOTE_POSITION, POSITION_NOT_SET)
+        notePosition = savedInstanceState?.getInt(NOTE_POSITION, POSITION_NOT_SET) ?:
+            intent.getIntExtra(NOTE_POSITION, POSITION_NOT_SET)
 
         if(notePosition != POSITION_NOT_SET)
             displayNote()
+        else{
+            createNewNote()
 
+
+        }
+        Log.d(tag, "onCreate")
     }
 
+    private fun createNewNote() {
+        DataManager.notes.add(NoteInfo())
+        notePosition = DataManager.notes.lastIndex
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState?.putInt(NOTE_POSITION, notePosition)
+    }
 
     private fun displayNote() {
+
+        Log.i(tag, "Displaying note for Position $notePosition")
         val note = DataManager.notes[notePosition]
 
         val noteTitle = findViewById<EditText>(R.id.textNoteTitle)
@@ -76,6 +88,8 @@ class MainActivity : AppCompatActivity() {
             R.id.action_settings -> true
             R.id.action_next -> {
                 moveNext()
+
+
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -97,7 +111,28 @@ class MainActivity : AppCompatActivity() {
             }
 
         }
-
         return super.onPrepareOptionsMenu(menu)
+    }
+
+
+    override fun onPause() {
+        super.onPause()
+        saveNote()
+
+        Log.d(tag, "onPause")
+    }
+
+    private fun saveNote() {
+        val note = DataManager.notes[notePosition]
+
+        val noteTitle = findViewById<EditText>(R.id.textNoteTitle)
+        val noteText = findViewById<EditText>(R.id.textNoteText)
+        val spinnerCourse = findViewById<Spinner>(R.id.spinnerCourses)
+
+
+
+        note.title = noteTitle.text.toString()
+        note.text = noteText.text.toString()
+        note.course = spinnerCourse.selectedItem as CourseInfo
     }
 }
