@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+   <style name="CourseTitle">
+       <item name="android:textColor">#FFF05A28</item>
 
+   </style>
 </resources>

@@ -2,10 +2,10 @@ package com.example.notekeeper
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.ArrayAdapter
-import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.notekeeper.databinding.ActivityNoteListBinding
 
 class NoteListActivity : AppCompatActivity() {
@@ -24,10 +24,14 @@ class NoteListActivity : AppCompatActivity() {
 
 
         binding.fab.setOnClickListener { view ->
-            val activityIntent = Intent(this, MainActivity::class.java)
+            val activityIntent = Intent(this, NoteActivity::class.java)
               startActivity(activityIntent)
         }
 
+      val listItem = findViewById<RecyclerView>(R.id.listItemx)
+        listItem.layoutManager = LinearLayoutManager(this)
+
+        listItem.adapter = NoteRecyclerAdapter(this, DataManager.notes)
 
 
 
@@ -35,7 +39,8 @@ class NoteListActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-
+        val listItem = findViewById<RecyclerView>(R.id.listItemx)
+        listItem.adapter?.notifyDataSetChanged()
     }
 
 }

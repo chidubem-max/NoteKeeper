@@ -11,9 +11,9 @@ import android.widget.EditText
 import android.widget.Spinner
 import com.example.notekeeper.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+class NoteActivity : AppCompatActivity() {
 
-    private var tag = "MainActivity"
+    private var tag = "NoteActivity"
     private var  notePosition = POSITION_NOT_SET
 
 
