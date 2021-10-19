@@ -11,15 +11,34 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.notekeeper.databinding.ActivityItemsBinding
+import com.google.android.material.snackbar.Snackbar
 
 class ItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityItemsBinding
     lateinit var toggle: ActionBarDrawerToggle
+
+    private val noteLayoutManager by lazy {
+        LinearLayoutManager(this)
+    }
+
+    private val noteRecyclerAdapter by lazy {
+        NoteRecyclerAdapter(this, DataManager.notes)
+    }
+
+    private val courseLayoutManager by lazy {
+        GridLayoutManager(this, 2)
+    }
+
+    private val courseRecyclerAdapter by lazy {
+        CourseRecyclerAdapter(this , DataManager.courses.values.toList())
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,17 +58,30 @@ class ItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
 
 
-         val listItem = findViewById<RecyclerView>(R.id.listItemx)
-        listItem.layoutManager = LinearLayoutManager(this)
-        listItem.adapter = NoteRecyclerAdapter(this, DataManager.notes)
+        displayNotes()
 
-         toggle = ActionBarDrawerToggle(
+        toggle = ActionBarDrawerToggle(
             this, drawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         navView.setNavigationItemSelectedListener(this)
+    }
+
+    private fun displayNotes() {
+        val listItem = findViewById<RecyclerView>(R.id.listItemx)
+        listItem.layoutManager = noteLayoutManager
+        listItem.adapter = noteRecyclerAdapter
+
+        val navView: NavigationView = binding.navView
+        navView.menu.findItem(R.id.nav_notes).isChecked = true
+    }
+
+    private fun displayCourses(){
+        val listItem = findViewById<RecyclerView>(R.id.listItemx)
+        listItem.layoutManager = courseLayoutManager
+        listItem.adapter = courseRecyclerAdapter
     }
 
     override fun onResume() {
@@ -95,14 +127,28 @@ class ItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         // Handle navigation view item clicks here.
         when (item.itemId) {
 
-            R.id.nav_gallery ->{Toast.makeText(applicationContext, "Clicked Gallery", Toast.LENGTH_SHORT).show()}
-            R.id.nav_slideshow -> {
-                Toast.makeText(applicationContext, "Clicked Slideshow", Toast.LENGTH_SHORT).show()
+            R.id.nav_notes ->{
+               displayNotes()
+            }
+            R.id.nav_courses -> {
+               displayCourses()
+            }
+
+            R.id.nav_share -> {
+
+            }
+            R.id.nav_send -> {
+
             }
         }
         val drawerLayout: DrawerLayout = binding.drawerLayout
 
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    private fun handleSelection(message: String) {
+        val itemList = findViewById<RecyclerView>(R.id.listItemx)
+        Snackbar.make(itemList, message, Snackbar.LENGTH_LONG).show()
     }
 }
