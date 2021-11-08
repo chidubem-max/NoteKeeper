@@ -28,7 +28,7 @@ class NoteListActivity : AppCompatActivity() {
               startActivity(activityIntent)
         }
 
-      val listItem = findViewById<RecyclerView>(R.id.listItemx)
+      val listItem = findViewById<RecyclerView>(R.id.listItems)
         listItem.layoutManager = LinearLayoutManager(this)
 
         listItem.adapter = NoteRecyclerAdapter(this, DataManager.notes)
@@ -39,8 +39,9 @@ class NoteListActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        val listItem = findViewById<RecyclerView>(R.id.listItemx)
+        val listItem = findViewById<RecyclerView>(R.id.listItems)
         listItem.adapter?.notifyDataSetChanged()
+
     }
 
 }

@@ -9,7 +9,7 @@
     tools:context=".ItemsActivity">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/listItemx"
+        android:id="@+id/listItems"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"

@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Spinner
 import com.example.notekeeper.databinding.ActivityMainBinding
+import com.google.android.material.snackbar.Snackbar
 
 class NoteActivity : AppCompatActivity() {
 
@@ -108,6 +109,7 @@ class NoteActivity : AppCompatActivity() {
             if(menuItem != null) {
                  menuItem.icon = getDrawable(R.drawable.ic_baseline_block_24)
                 menuItem.isEnabled = false
+
             }
 
         }
@@ -122,6 +124,10 @@ class NoteActivity : AppCompatActivity() {
         Log.d(tag, "onPause")
     }
 
+
+//    private fun showMessage(message: String) {
+//        Snackbar.make(textNoteTitle, message, Snackbar.LENGTH_LONG).show()
+//    }
     private fun saveNote() {
         val note = DataManager.notes[notePosition]
 

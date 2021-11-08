@@ -10,7 +10,22 @@ object DataManager {
    }
 
 
-    private fun initializeCourses() {
+    fun addNotes(course: CourseInfo, noteTitle: String, noteText: String) : Int {
+        val note = NoteInfo(course, noteTitle, noteText)
+        notes.add(note)
+        return notes.lastIndex
+    }
+
+    fun findNotes(course: CourseInfo, noteTitle: String, noteText: String) : NoteInfo? {
+        for (note in notes)
+           if (course == note.course &&
+                   noteTitle == note.title &&
+                   noteText == note.text)
+                       return note
+        return null
+    }
+
+    fun initializeCourses() {
         var course = CourseInfo("android_intents", "Android Programming with intents")
         courses.set(course.courseId, course)
 
@@ -25,7 +40,7 @@ object DataManager {
     }
 
 
-    private fun initializeNotes() {
+    fun initializeNotes() {
         var course = courses["android_intents"]!!
         var note = NoteInfo(course, "Service default threads", "Did you know that by default an Android service will tie up the UI thread?")
         notes.add(note)

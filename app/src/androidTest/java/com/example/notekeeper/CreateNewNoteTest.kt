@@ -8,7 +8,9 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import junit.framework.TestCase
-import org.hamcrest.Matchers.*
+import org.hamcrest.core.AllOf.allOf
+import org.hamcrest.core.IsEqual.equalTo
+import org.hamcrest.core.IsInstanceOf.instanceOf
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
