@@ -49,8 +49,7 @@ class NoteActivity : AppCompatActivity() {
     }
 
     private fun createNewNote() {
-        DataManager.notes.add(NoteInfo())
-        notePosition = DataManager.notes.lastIndex
+        notePosition = DataManager.addNote(NoteInfo())
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -61,7 +60,7 @@ class NoteActivity : AppCompatActivity() {
     private fun displayNote() {
 
         Log.i(tag, "Displaying note for Position $notePosition")
-        val note = DataManager.notes[notePosition]
+        val note = DataManager.loadNote(notePosition)
 
         val noteTitle = findViewById<EditText>(R.id.textNoteTitle)
         val noteText = findViewById<EditText>(R.id.textNoteText)
@@ -104,7 +103,7 @@ class NoteActivity : AppCompatActivity() {
     }
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
-        if (notePosition >= DataManager.notes.lastIndex){
+        if (DataManager.isLastNoteId(notePosition)){
             val menuItem = menu?.findItem(R.id.action_next)
             if(menuItem != null) {
                  menuItem.icon = getDrawable(R.drawable.ic_baseline_block_24)
@@ -129,7 +128,7 @@ class NoteActivity : AppCompatActivity() {
 //        Snackbar.make(textNoteTitle, message, Snackbar.LENGTH_LONG).show()
 //    }
     private fun saveNote() {
-        val note = DataManager.notes[notePosition]
+        val note = DataManager.loadNote(notePosition)
 
         val noteTitle = findViewById<EditText>(R.id.textNoteTitle)
         val noteText = findViewById<EditText>(R.id.textNoteText)

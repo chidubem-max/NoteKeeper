@@ -31,7 +31,7 @@ class NoteListActivity : AppCompatActivity() {
       val listItem = findViewById<RecyclerView>(R.id.listItems)
         listItem.layoutManager = LinearLayoutManager(this)
 
-        listItem.adapter = NoteRecyclerAdapter(this, DataManager.notes)
+        listItem.adapter = NoteRecyclerAdapter(this, DataManager.loadNotes())
 
 
 
