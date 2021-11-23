@@ -17,6 +17,10 @@ class NoteActivity : AppCompatActivity() {
     private var tag = "NoteActivity"
     private var  notePosition = POSITION_NOT_SET
 
+    val locManager = PseudoLocationManager(this, ) { lat , lon ->
+        Log.d(tag, "Location Callback Lat:$lat Lon:$lon ")
+    }
+
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
@@ -48,6 +52,15 @@ class NoteActivity : AppCompatActivity() {
         Log.d(tag, "onCreate")
     }
 
+    override fun onStart() {
+        super.onStart()
+        locManager.start()
+    }
+
+    override fun onStop() {
+        locManager.stop()
+        super.onStop()
+    }
     private fun createNewNote() {
         notePosition = DataManager.addNote(NoteInfo())
     }
