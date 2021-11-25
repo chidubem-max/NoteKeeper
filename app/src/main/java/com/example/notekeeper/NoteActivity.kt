@@ -17,9 +17,7 @@ class NoteActivity : AppCompatActivity() {
     private var tag = "NoteActivity"
     private var  notePosition = POSITION_NOT_SET
 
-    val locManager = PseudoLocationManager(this, ) { lat , lon ->
-        Log.d(tag, "Location Callback Lat:$lat Lon:$lon ")
-    }
+   val noteGetTogetherHelper = NoteGetTogetherHelper(this, lifecycle)
 
 
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -52,15 +50,7 @@ class NoteActivity : AppCompatActivity() {
         Log.d(tag, "onCreate")
     }
 
-    override fun onStart() {
-        super.onStart()
-        locManager.start()
-    }
 
-    override fun onStop() {
-        locManager.stop()
-        super.onStop()
-    }
     private fun createNewNote() {
         notePosition = DataManager.addNote(NoteInfo())
     }
@@ -102,7 +92,12 @@ class NoteActivity : AppCompatActivity() {
             R.id.action_next -> {
                 moveNext()
 
+                true
 
+            }
+
+            R.id.action_get_together -> {
+                noteGetTogetherHelper.sendMessage(DataManager.loadNote(notePosition ))
                 true
             }
             else -> super.onOptionsItemSelected(item)
